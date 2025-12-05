@@ -7,7 +7,6 @@ library(multcomp)
 library(gvlma)
 library(DescTools)
 library(ScottKnott)
-library(bios2mds)
 
 # importando os dados
 teste<- read_xlsx("C:/Users/moise/OneDrive/Documentos/teste.xlsx")
@@ -53,38 +52,6 @@ detect_p(tabela_contraste)
 
 
 
-# FUNÇÃO PARA DETECTAR PROBLEMAS 
-detect_p2 <- function(table){
-  final_results <- as.tibble(table)
-  
-  final_results <- final_results %>%
-    rename(contraste = contrast, 
-           p_valor = p.value,
-           estimativa= estimate, 
-           EP= SE, 
-           GL= df, 
-           razão.t= t.ratio)
-  
-  significant_data <- final_results %>%
-    filter(p_valor <= 0.05)
-  
-  if(nrow(significant_data) == 0) {
-    message("Não houveram violações")
-    return(NULL)
-  } else {
-    message("As seguintes violações foram encontradas (p ≤ 0.05):")
-    return(significant_data)
-  }
-}
-
-detect_p2(teste)
-detect_p2(contraste_exc)
-
-contraste_todos
-
-
-
-
 detect_p2 <- function(table){
   #table$trt<- as.factor(table$trt)
   modelo1<- lm(media ~ trt, data= table)
@@ -111,4 +78,5 @@ detect_p2 <- function(table){
     message("As seguintes violações foram encontradas (p ≤ 0.05):")
     return(significant_data)
   }
+
 }
